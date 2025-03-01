@@ -31,5 +31,11 @@ features = np.array([NE,WBC,HGB,PLT,TPOAb,sex]).reshape(1,-1)
 
 if st.button('Predict'):
     col1, col2 = st.columns(2)
-    p = model.predict_proba(features)[:,1]*100
-    col1.metric("Score", int(p), )
+    p = model.predict_proba(features)[:,1]
+    #print(p)
+    # 概率矫正
+    z = -5.1943+6.2986*p
+    prob = 1/(1+np.exp(-z))
+    prob = prob*100
+    #print(prob)
+    col1.metric("Score", int(prob), )
